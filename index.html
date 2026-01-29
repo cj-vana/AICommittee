@@ -650,9 +650,53 @@
     .accent { color: #e10600 !important; }
     h1, h2, h3 { color: #000 !important; -webkit-text-fill-color: #000 !important; }
   }
+
+  /* ── Poll slide layout: QR left, results right ── */
+  .poll-body { display: flex; gap: 48px; align-items: flex-start; width: 100%; max-width: 1100px; margin-top: 16px; }
+  .poll-left { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .poll-left canvas { border-radius: 10px; display: block; }
+  .poll-left .poll-qr-label { font-size: 0.8rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; }
+  .poll-right { flex: 1; min-width: 0; }
+
+  /* ── Live poll results ── */
+  .poll-results { width: 100%; }
+  .poll-results .result-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .poll-results .result-label { flex: 0 0 180px; font-size: clamp(0.8rem, 1.2vw, 1rem); text-align: right; color: var(--white); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .poll-results .result-bar-track { flex: 1; height: 32px; background: var(--surface); border-radius: 4px; overflow: hidden; position: relative; }
+  .poll-results .result-bar-fill { height: 100%; background: linear-gradient(90deg, var(--red), #ff4444); border-radius: 4px; transition: width 0.5s cubic-bezier(0.16,1,0.3,1); min-width: 0; }
+  .poll-results .result-count { flex: 0 0 40px; font-size: 1rem; font-weight: 700; color: var(--white); font-variant-numeric: tabular-nums; }
+  .poll-results .result-total { font-size: 0.8rem; color: var(--gray); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+  .poll-results .result-average { font-size: 3.5rem; font-weight: 900; color: var(--red); font-variant-numeric: tabular-nums; margin: 4px 0; }
+  .poll-results .result-average-label { font-size: 0.85rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; }
+  .poll-results .open-responses { max-height: 320px; overflow-y: auto; text-align: left; padding: 4px 0; }
+  .poll-results .open-response { padding: 8px 14px; margin-bottom: 6px; background: var(--surface); border-radius: 8px; border-left: 3px solid var(--red); font-size: 0.95rem; line-height: 1.4; }
+  .poll-results .writein-list { margin-top: 10px; text-align: left; }
+  .poll-results .writein-item { padding: 4px 10px; font-size: 0.85rem; color: var(--gray); }
+
+  /* ── Setup overlay ── */
+  #poll-setup-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 10000; display: flex; align-items: center; justify-content: center; }
+  #poll-setup-overlay.hidden { display: none; }
+  #poll-setup-box { background: var(--surface); border: 1px solid var(--dim); border-radius: 12px; padding: 32px 40px; max-width: 440px; width: 90%; text-align: center; }
+  #poll-setup-box h2 { font-family: var(--heading); font-size: 1.3rem; margin-bottom: 8px; text-transform: uppercase; }
+  #poll-setup-box p { color: var(--gray); font-size: 0.9rem; margin-bottom: 20px; }
+  #poll-setup-box input { width: 100%; padding: 12px 16px; background: var(--bg); border: 2px solid var(--dim); border-radius: 8px; color: var(--white); font-size: 1rem; font-family: var(--font); }
+  #poll-setup-box input:focus { outline: none; border-color: var(--red); }
+  #poll-setup-box button { margin-top: 12px; padding: 12px 32px; background: var(--red); color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
+  #poll-setup-box .skip-btn { margin-top: 8px; padding: 8px 16px; background: none; border: none; color: var(--gray); font-size: 0.8rem; cursor: pointer; display: block; width: 100%; }
 </style>
 </head>
 <body>
+
+<!-- Poll setup overlay -->
+<div id="poll-setup-overlay" class="hidden">
+  <div id="poll-setup-box">
+    <h2>Poll Server Setup</h2>
+    <p>Paste your ngrok URL to enable live polling.<br>Run: <code style="color:var(--red)">ngrok http 3000</code></p>
+    <input type="text" id="poll-server-input" placeholder="https://xxxx.ngrok-free.app" autocomplete="off">
+    <button id="poll-server-save">Connect</button>
+    <button class="skip-btn" id="poll-server-skip">Skip (no live polls)</button>
+  </div>
+</div>
 
 <div class="deck" id="deck" role="region" aria-label="Presentation slides" aria-live="polite">
 
@@ -676,21 +720,19 @@
   <p class="big-text" style="margin-top:20px">In about <span class="accent">10 seconds</span>.</p>
 </div>
 
-<!-- ===== SLIDE 3 ===== -->
-<div class="slide" data-section="Qualifying Lap" data-notes="'Before we dive in, let's see where we're starting. Scan the QR code and answer honestly — no judgment. This helps us understand what you need.' (Wait for responses, react to results) 'Interesting! Whether you're using it daily or have never tried it, you're in the right place.'">
+<!-- ===== SLIDE 3: POLL 1 ===== -->
+<div class="slide" data-section="Qualifying Lap" data-poll="1" data-notes="'Before we dive in, let's see where we're starting. Scan the QR code and answer honestly — no judgment. This helps us understand what you need.' (Wait for responses, react to results) 'Interesting! Whether you're using it daily or have never tried it, you're in the right place.'">
   <div class="poll-badge">AUDIENCE DRS OPEN</div>
-  <h2>Quick Pit Stop</h2>
-  <p class="subtitle">Let's see where we are</p>
-  <div class="poll-container" style="margin:30px 0">
-    <p style="font-size:1.1rem;color:var(--gray);margin-bottom:12px">[QR CODE FOR SLIDO]</p>
-    <h3 style="color:var(--white);font-size:1.2rem;text-transform:none;letter-spacing:0;display:block;padding:0;background:none;border:none">Have you used AI for work in the past month?</h3>
+  <h2>Have you used AI for work in the past month?</h2>
+  <div class="poll-body">
+    <div class="poll-left">
+      <canvas id="qr-poll-1"></canvas>
+      <span class="poll-qr-label">Scan to vote</span>
+    </div>
+    <div class="poll-right">
+      <div class="poll-results" id="results-poll-1"></div>
+    </div>
   </div>
-  <ul class="poll-options">
-    <li>Yes, regularly</li>
-    <li>Yes, a few times</li>
-    <li>No, but I'm curious</li>
-    <li>What's AI?</li>
-  </ul>
 </div>
 
 <!-- ===== SLIDE 4 ===== -->
@@ -805,13 +847,19 @@
   </ul>
 </div>
 
-<!-- ===== SLIDE 13: POLL ===== -->
-<div class="slide" data-section="Lap 1 — General Session / NPM" data-notes="'Quick check-in. For those of you in production roles — what task would you love AI help with? Type it in.' (React to responses)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 13: Production Poll">
+<!-- ===== SLIDE 13: POLL 2 ===== -->
+<div class="slide" data-section="Lap 1 — General Session / NPM" data-poll="2" data-notes="'Quick check-in. For those of you in production roles — what task would you love AI help with? Type it in.' (React to responses)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 13: Production Poll">
   <div class="poll-badge">AUDIENCE DRS OPEN</div>
-  <div class="poll-container">
-    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:8px">[SLIDO POLL]</p>
-    <h2 style="font-size:clamp(1.2rem,2.2vw,1.8rem)">What GS/production task would you want AI to help with?</h2>
-    <p style="margin-top:12px;color:var(--gray)">Open text response</p>
+  <h2>What GS/production task would you want AI to help with?</h2>
+  <p style="color:var(--gray);margin-bottom:8px">Open text response</p>
+  <div class="poll-body">
+    <div class="poll-left">
+      <canvas id="qr-poll-2"></canvas>
+      <span class="poll-qr-label">Scan to vote</span>
+    </div>
+    <div class="poll-right">
+      <div class="poll-results" id="results-poll-2"></div>
+    </div>
   </div>
 </div>
 
@@ -871,20 +919,19 @@
   </div>
 </div>
 
-<!-- ===== SLIDE 19: POLL ===== -->
-<div class="slide" data-section="Lap 2 — Project Management" data-notes="'Let's check the temperature. How confident are you feeling about AI right now?' (React to results, reassure the nervous ones)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 19: Confidence Poll">
+<!-- ===== SLIDE 19: POLL 3 ===== -->
+<div class="slide" data-section="Lap 2 — Project Management" data-poll="3" data-notes="'Let's check the temperature. How confident are you feeling about AI right now?' (React to results, reassure the nervous ones)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 19: Confidence Poll">
   <div class="poll-badge">AUDIENCE DRS OPEN</div>
-  <div class="poll-container">
-    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:8px">[SLIDO POLL]</p>
-    <h2 style="font-size:clamp(1.2rem,2.2vw,1.8rem)">How confident are you in using AI for work?</h2>
+  <h2>How confident are you in using AI for work?</h2>
+  <div class="poll-body">
+    <div class="poll-left">
+      <canvas id="qr-poll-3"></canvas>
+      <span class="poll-qr-label">Scan to vote</span>
+    </div>
+    <div class="poll-right">
+      <div class="poll-results" id="results-poll-3"></div>
+    </div>
   </div>
-  <ul class="poll-options" style="margin-top:20px">
-    <li><span class="accent">1</span> — Not at all</li>
-    <li><span class="accent">2</span> — A little nervous</li>
-    <li><span class="accent">3</span> — Somewhat confident</li>
-    <li><span class="accent">4</span> — Pretty confident</li>
-    <li><span class="accent">5</span> — I'm already an AI pro</li>
-  </ul>
 </div>
 
 <!-- ===== SLIDE 20: LAP 3 INTRO ===== -->
@@ -996,23 +1043,20 @@
   <p class="subtitle" style="margin-top:20px">Simple habit, big protection</p>
 </div>
 
-<!-- ===== SLIDE 30: POLL ===== -->
-<div class="slide" data-section="Lap 4 — Admin & Marketing" data-notes="'Let's see what's on your radar.' (React to results)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 30: AI Tools Poll">
+<!-- ===== SLIDE 30: POLL 4 ===== -->
+<div class="slide" data-section="Lap 4 — Admin & Marketing" data-poll="4" data-notes="'Let's see what's on your radar.' (React to results)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 30: AI Tools Poll">
   <div class="poll-badge">AUDIENCE DRS OPEN</div>
-  <div class="poll-container">
-    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:8px">[SLIDO POLL]</p>
-    <h2 style="font-size:clamp(1.2rem,2.2vw,1.8rem)">What AI tools have you heard of?</h2>
-    <p style="margin-top:8px;color:var(--gray)">Select all that apply</p>
+  <h2>What AI tools have you heard of?</h2>
+  <p style="color:var(--gray);margin-bottom:8px">Select all that apply</p>
+  <div class="poll-body">
+    <div class="poll-left">
+      <canvas id="qr-poll-4"></canvas>
+      <span class="poll-qr-label">Scan to vote</span>
+    </div>
+    <div class="poll-right">
+      <div class="poll-results" id="results-poll-4"></div>
+    </div>
   </div>
-  <ul class="poll-options" style="margin-top:20px">
-    <li>ChatGPT</li>
-    <li>Microsoft Copilot</li>
-    <li>Google Gemini</li>
-    <li>Claude</li>
-    <li>ElevenLabs</li>
-    <li>Midjourney / DALL-E</li>
-    <li>None of these</li>
-  </ul>
 </div>
 
 <!-- ===== SLIDE 31: LAP 5 INTRO ===== -->
@@ -1160,13 +1204,19 @@
   </ul>
 </div>
 
-<!-- ===== SLIDE 44: POLL ===== -->
-<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'What are you most worried about with AI? Let's see what's on your mind.' (Acknowledge concerns, address any common themes)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 44: Concerns Poll">
+<!-- ===== SLIDE 44: POLL 5 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-poll="5" data-notes="'What are you most worried about with AI? Let's see what's on your mind.' (Acknowledge concerns, address any common themes)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 44: Concerns Poll">
   <div class="poll-badge">AUDIENCE DRS OPEN</div>
-  <div class="poll-container">
-    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:8px">[SLIDO POLL]</p>
-    <h2 style="font-size:clamp(1.2rem,2.2vw,1.8rem)">What's your biggest concern about using AI?</h2>
-    <p style="margin-top:12px;color:var(--gray)">Word cloud — open text</p>
+  <h2>What's your biggest concern about using AI?</h2>
+  <p style="color:var(--gray);margin-bottom:8px">Open text</p>
+  <div class="poll-body">
+    <div class="poll-left">
+      <canvas id="qr-poll-5"></canvas>
+      <span class="poll-qr-label">Scan to vote</span>
+    </div>
+    <div class="poll-right">
+      <div class="poll-results" id="results-poll-5"></div>
+    </div>
   </div>
 </div>
 
@@ -1326,20 +1376,19 @@
   <p class="big-text" style="margin:20px 0">Available to all full-time employees <span class="accent">soon</span>.</p>
 </div>
 
-<!-- ===== SLIDE 63 ===== -->
-<div class="slide" data-section="Checkered Flag" data-notes="'We need your help with one thing — naming it. Scan and vote. We've got a few options, or write in your own idea.' (Give 30-60 seconds for voting, then reveal results) 'And the winner is…'">
+<!-- ===== SLIDE 63: POLL 6 ===== -->
+<div class="slide" data-section="Checkered Flag" data-poll="6" data-notes="'We need your help with one thing — naming it. Scan and vote. We've got a few options, or write in your own idea.' (Give 30-60 seconds for voting, then reveal results) 'And the winner is…'">
   <div class="poll-badge">AUDIENCE DRS OPEN</div>
   <h2>Help Us Name It!</h2>
-  <div class="poll-container" style="margin:20px 0">
-    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:12px">[QR CODE FOR SLIDO]</p>
-    <p style="font-size:1.1rem;font-weight:600">Vote for the name:</p>
+  <div class="poll-body">
+    <div class="poll-left">
+      <canvas id="qr-poll-6"></canvas>
+      <span class="poll-qr-label">Scan to vote</span>
+    </div>
+    <div class="poll-right">
+      <div class="poll-results" id="results-poll-6"></div>
+    </div>
   </div>
-  <ul class="poll-options" style="margin-top:16px">
-    <li><span class="accent">IRIS</span> — Intelligent Resource Information System</li>
-    <li><span class="accent">AVI</span> — Audio Visual Intelligence</li>
-    <li><span class="accent">ProjBot</span></li>
-    <li>Write your own suggestion</li>
-  </ul>
 </div>
 
 <!-- ===== SLIDE 64 ===== -->
@@ -1642,6 +1691,221 @@
   setTimeout(function() {
     document.body.classList.add('loaded');
   }, 2000);
+})();
+</script>
+
+<!-- QR Code library (lightweight, no dependencies) -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+
+<!-- Live Polling System -->
+<script>
+(function() {
+  // Auto-detect: if loaded from the server (localhost:3000), use that origin directly
+  var autoOrigin = (location.port === '3000' && (location.hostname === 'localhost' || location.hostname === '127.0.0.1'))
+    ? location.origin : '';
+  var pollServerUrl = autoOrigin || localStorage.getItem('poll_server_url') || '';
+  var publicVoteUrl = ''; // ngrok URL for QR codes (phones need a public URL)
+  var ws = null;
+  var resultsCache = {};
+
+  // ── Setup overlay ──
+  var overlay = document.getElementById('poll-setup-overlay');
+  var input = document.getElementById('poll-server-input');
+  var saveBtn = document.getElementById('poll-server-save');
+  var skipBtn = document.getElementById('poll-server-skip');
+
+  if (!pollServerUrl) {
+    overlay.classList.remove('hidden');
+  } else {
+    connectServer(pollServerUrl);
+  }
+
+  saveBtn.addEventListener('click', function() {
+    var url = input.value.trim().replace(/\/+$/, '');
+    if (!url) return;
+    localStorage.setItem('poll_server_url', url);
+    pollServerUrl = url;
+    publicVoteUrl = url; // manual entry is assumed to be the public URL
+    overlay.classList.add('hidden');
+    connectServer(url);
+  });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') saveBtn.click();
+  });
+
+  skipBtn.addEventListener('click', function() {
+    overlay.classList.add('hidden');
+  });
+
+  // Allow re-opening setup with Ctrl+Shift+P
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.shiftKey && e.key === 'P') {
+      e.preventDefault();
+      input.value = pollServerUrl;
+      overlay.classList.remove('hidden');
+      input.focus();
+    }
+  });
+
+  function connectServer(url) {
+    pollServerUrl = url;
+    loadAllResults();
+    connectWebSocket(url);
+    // Fetch the public tunnel URL for QR codes
+    fetch(url + '/api/tunnel')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.url) {
+          publicVoteUrl = data.url;
+          generateAllQRCodes();
+        }
+      })
+      .catch(function() {});
+  }
+
+  // ── QR code generation (uses public tunnel URL so phones can reach it) ──
+  function generateAllQRCodes() {
+    var base = publicVoteUrl || pollServerUrl;
+    if (!base || typeof qrcode === 'undefined') return;
+    for (var i = 1; i <= 6; i++) {
+      var canvas = document.getElementById('qr-poll-' + i);
+      if (canvas) {
+        generateQR(canvas, base + '/vote?poll=' + i);
+      }
+    }
+  }
+
+  function generateQR(canvas, url) {
+    try {
+      var qr = qrcode(0, 'M');
+      qr.addData(url);
+      qr.make();
+      var moduleCount = qr.getModuleCount();
+      var cellSize = Math.max(4, Math.floor(280 / moduleCount));
+      var size = moduleCount * cellSize + cellSize * 2; // padding
+      canvas.width = size;
+      canvas.height = size;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = '#000000';
+      for (var r = 0; r < moduleCount; r++) {
+        for (var c = 0; c < moduleCount; c++) {
+          if (qr.isDark(r, c)) {
+            ctx.fillRect(c * cellSize + cellSize, r * cellSize + cellSize, cellSize, cellSize);
+          }
+        }
+      }
+    } catch (e) {
+      // QR generation failed silently
+    }
+  }
+
+  // ── WebSocket ──
+  function connectWebSocket(url) {
+    if (ws) { try { ws.close(); } catch(e) {} }
+    var wsUrl = url.replace(/^http/, 'ws') + '/ws';
+    try {
+      ws = new WebSocket(wsUrl);
+      ws.onmessage = function(evt) {
+        try {
+          var data = JSON.parse(evt.data);
+          if (data.type === 'vote' && data.poll) {
+            resultsCache[data.poll] = data.results;
+            renderResults(data.poll, data.results);
+          } else if (data.type === 'tunnel' && data.url) {
+            publicVoteUrl = data.url;
+            generateAllQRCodes();
+          }
+        } catch(e) {}
+      };
+      ws.onclose = function() {
+        setTimeout(function() { connectWebSocket(pollServerUrl); }, 3000);
+      };
+      ws.onerror = function() {};
+    } catch(e) {}
+  }
+
+  // ── Load initial results ──
+  function loadAllResults() {
+    if (!pollServerUrl) return;
+    for (var i = 1; i <= 6; i++) {
+      (function(pid) {
+        fetch(pollServerUrl + '/api/results/' + pid)
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            resultsCache[pid] = data;
+            renderResults(pid, data);
+          })
+          .catch(function() {});
+      })(i);
+    }
+  }
+
+  // ── Render results into the slide ──
+  function renderResults(pollId, data) {
+    var container = document.getElementById('results-poll-' + pollId);
+    if (!container) return;
+
+    var html = '<div class="result-total">Votes: ' + (data.total || 0) + '</div>';
+
+    // Open text (polls 2, 5)
+    if (Array.isArray(data.results) && data.results.length > 0 && typeof data.results[0] === 'string') {
+      html += '<div class="open-responses">';
+      data.results.forEach(function(r) {
+        html += '<div class="open-response">' + escapeHtml(r) + '</div>';
+      });
+      html += '</div>';
+      container.innerHTML = html;
+      return;
+    }
+
+    // Likert (poll 3) — show average + bars
+    if (data.average !== undefined) {
+      html += '<div class="result-average">' + data.average + '</div>';
+      html += '<div class="result-average-label">Average Confidence</div>';
+    }
+
+    // Bar chart results
+    if (Array.isArray(data.results) && data.results.length > 0 && typeof data.results[0] === 'object') {
+      var maxCount = Math.max.apply(null, data.results.map(function(r) { return r.count; }));
+      if (maxCount === 0) maxCount = 1;
+      data.results.forEach(function(r) {
+        var pct = (r.count / maxCount) * 100;
+        // Shorten long labels
+        var label = r.label;
+        if (label.length > 28) label = label.substring(0, 26) + '…';
+        html += '<div class="result-bar-row">' +
+          '<div class="result-label" title="' + escapeAttr(r.label) + '">' + escapeHtml(label) + '</div>' +
+          '<div class="result-bar-track"><div class="result-bar-fill" style="width:' + pct + '%"></div></div>' +
+          '<div class="result-count">' + r.count + '</div>' +
+          '</div>';
+      });
+    }
+
+    // Write-ins (poll 6)
+    if (data.writeIns && data.writeIns.length > 0) {
+      html += '<div class="writein-list">';
+      html += '<div style="font-size:0.85rem;color:var(--gray);margin-top:12px;text-transform:uppercase;letter-spacing:0.1em">Write-ins:</div>';
+      data.writeIns.forEach(function(w) {
+        html += '<div class="writein-item">"' + escapeHtml(w) + '"</div>';
+      });
+      html += '</div>';
+    }
+
+    container.innerHTML = html;
+  }
+
+  function escapeHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function escapeAttr(s) {
+    return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
 })();
 </script>
 </body>

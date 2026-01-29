@@ -1,0 +1,16 @@
+{
+  "name": "ai-committee-polls",
+  "version": "1.0.0",
+  "description": "Live polling server for AVU 2026 AI Committee presentation",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@ngrok/ngrok": "^1.7.0",
+    "better-sqlite3": "^11.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "ws": "^8.18.0"
+  }
+}
