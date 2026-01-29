@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AVU 2026 AI Committee Presentation - Projection">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='16' height='16' fill='%23e10600'/><rect x='16' y='16' width='16' height='16' fill='%23e10600'/><rect x='16' width='16' height='16' fill='%23222'/><rect y='16' width='16' height='16' fill='%23222'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Racing+Sans+One&display=swap">
+<title>AVU 2026 — AI Committee</title>
+<style>
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface-raised: #1c1c1c;
+    --red: #e10600;
+    --red-glow: rgba(225, 6, 0, 0.3);
+    --red-dark: #8b0000;
+    --yellow: #ffd700;
+    --white: #f0f0f0;
+    --gray: #888;
+    --gray-light: #aaa;
+    --dim: #444;
+    --carbon: #1a1a1a;
+    --timing-green: #00ff87;
+    --timing-purple: #a855f7;
+    --font: 'Inter', sans-serif;
+    --heading: 'Racing Sans One', 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Slide Container ── */
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 100px;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, visibility 0.4s;
+  }
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* ── Racing stripe across top ── */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--red) 0%, var(--red) 60%, transparent 100%);
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+
+  /* ── Typography ── */
+  h1 {
+    font-family: var(--heading);
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 0.4em;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  h2 {
+    font-family: var(--heading);
+    font-size: clamp(1.5rem, 3.5vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 0.5em;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-size: clamp(1rem, 2vw, 1.6rem);
+    font-weight: 600;
+    margin-bottom: 0.5em;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .slide > h3 {
+    font-size: clamp(0.8rem, 1.4vw, 1rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    font-family: var(--font);
+    font-variant-numeric: tabular-nums;
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(225, 6, 0, 0.1);
+    border: 1px solid rgba(225, 6, 0, 0.3);
+    border-radius: 4px;
+  }
+  p, li {
+    font-size: clamp(1rem, 1.8vw, 1.5rem);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  ul {
+    list-style: none;
+    text-align: left;
+    max-width: 800px;
+  }
+  ul li {
+    padding: 0.35em 0;
+    padding-left: 1.5em;
+    position: relative;
+  }
+  ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 700;
+  }
+  .subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.7rem);
+    color: var(--gray);
+    font-weight: 300;
+    margin-top: 0.3em;
+  }
+  .big-text {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 300;
+    line-height: 1.5;
+    max-width: 900px;
+  }
+  .accent { color: var(--red); font-weight: 700; }
+  .yellow { color: var(--yellow); }
+  .dim { color: var(--gray); }
+  strong { font-weight: 700; }
+
+  /* ── Columns ── */
+  .columns {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    text-align: left;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .columns .col { flex: 1; }
+
+  /* ── Before / After ── */
+  .compare {
+    display: flex;
+    gap: 40px;
+    max-width: 1000px;
+    width: 100%;
+    text-align: left;
+  }
+  .compare .box {
+    flex: 1;
+    padding: 30px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--dim);
+    position: relative;
+    overflow: hidden;
+  }
+  .compare .box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .compare .box.before { border-color: var(--dim); opacity: 0.7; }
+  .compare .box.before::before { background: var(--dim); }
+  .compare .box.after { border-color: var(--red); box-shadow: 0 0 30px var(--red-glow); }
+  .compare .box.after::before { background: var(--red); }
+  .compare .box h3 { margin-bottom: 0.5em; display: block; padding: 0; background: none; border: none; }
+  .compare .box.before h3 { color: var(--gray); }
+  .compare .box.after h3 { color: var(--red); }
+
+  /* ── Quote / callout (Team Radio) ── */
+  .callout {
+    background: var(--surface);
+    border-left: 4px solid var(--red);
+    padding: 24px 32px 24px 40px;
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    font-style: italic;
+    max-width: 800px;
+    text-align: left;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    position: relative;
+  }
+  .callout::after {
+    content: 'TEAM RADIO';
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    font-size: 0.6rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    background: var(--bg);
+    padding: 2px 8px;
+  }
+  /* Yellow flag warning callout */
+  .callout-warning {
+    background: rgba(255, 215, 0, 0.06);
+    border-left: 4px solid var(--yellow);
+    padding: 24px 32px 24px 40px;
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    font-style: italic;
+    max-width: 800px;
+    text-align: left;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    position: relative;
+  }
+  .callout-warning::after {
+    content: 'YELLOW FLAG';
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    font-size: 0.6rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    background: var(--bg);
+    padding: 2px 8px;
+  }
+
+  /* ── Section Dividers ── */
+  .slide.section-divider {
+    background: linear-gradient(135deg, var(--bg) 0%, #1a0000 100%);
+  }
+  .slide.section-divider h1 {
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    color: var(--red);
+    background: linear-gradient(90deg, var(--red), #ff4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.06em;
+    transform: skewX(-2deg);
+  }
+  .slide.section-divider::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--red);
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+  .slide.section-divider::before {
+    background: linear-gradient(
+      90deg,
+      var(--red) 0%,
+      var(--red) 40%,
+      var(--yellow) 40%,
+      var(--yellow) 60%,
+      var(--red) 60%
+    );
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+
+  /* ── Checkered flag pattern ── */
+  .checkered-bg {
+    background-image:
+      repeating-conic-gradient(
+        #ffffff08 0% 25%,
+        transparent 0% 50%
+      );
+    background-size: 60px 60px;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, transparent 20%, black 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, transparent 20%, black 80%);
+  }
+
+  /* ── Title slide ── */
+  .title-slide {
+    background: radial-gradient(ellipse at 50% 30%, #1a0000 0%, var(--bg) 70%);
+  }
+  .title-slide h1 {
+    font-size: clamp(3rem, 7vw, 6rem);
+    color: #fff;
+    background: linear-gradient(180deg, #fff 0%, #ccc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+
+  /* ── Poll slides ── */
+  .poll-options {
+    text-align: left;
+    max-width: 600px;
+  }
+  .poll-options li {
+    padding: 12px 0;
+    padding-left: 0;
+    font-size: clamp(1rem, 1.6vw, 1.3rem);
+  }
+  .poll-options li::before {
+    content: none;
+  }
+
+  /* ── Name card (Pit Board) ── */
+  .name-card {
+    margin-top: 20px;
+    padding: 20px 32px;
+    background: var(--surface);
+    border-left: 4px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    display: inline-block;
+    text-align: left;
+  }
+  .name-card .name {
+    font-family: var(--heading);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .name-card .role {
+    color: var(--gray);
+    font-size: clamp(0.8rem, 1.3vw, 1rem);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+  }
+
+  /* ── Principles / numbered list ── */
+  .principles {
+    text-align: left;
+    max-width: 750px;
+    counter-reset: principle;
+  }
+  .principles li {
+    padding: 14px 0;
+    padding-left: 2.5em;
+    position: relative;
+    font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+  }
+  .principles li::before {
+    counter-increment: principle;
+    content: counter(principle);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 1.8em;
+    height: 1.8em;
+    background: var(--red);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85em;
+  }
+
+  /* ── Phased roadmap ── */
+  .phase-badge {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 4px 14px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+
+  /* ── Progress Bar (Lap Tracker) ── */
+  #progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--red);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+    box-shadow: 0 0 10px var(--red-glow), 0 0 30px rgba(225, 6, 0, 0.15);
+  }
+  #progress::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 7px;
+    height: 7px;
+    background: var(--red);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--red-glow);
+  }
+
+  /* ── Slide counter (Lap Counter) ── */
+  #counter {
+    position: fixed;
+    bottom: 14px;
+    right: 24px;
+    font-size: 0.8rem;
+    color: var(--gray);
+    z-index: 100;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  #counter::before {
+    content: 'LAP ';
+    color: var(--dim);
+    font-weight: 400;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ── Section label ── */
+  #section-label {
+    position: fixed;
+    bottom: 14px;
+    left: 24px;
+    font-size: 0.75rem;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    z-index: 100;
+  }
+
+  /* ── Presenter button ── */
+  #presenter-btn {
+    position: fixed;
+    top: 14px;
+    right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--dim);
+    color: var(--gray);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    z-index: 100;
+    transition: all 0.2s;
+  }
+  #presenter-btn:hover {
+    border-color: var(--red);
+    color: var(--white);
+  }
+
+  /* ── Font loading mask ── */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: var(--bg);
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  body.loaded::after {
+    opacity: 0;
+  }
+
+  /* ── Carbon fiber surface texture ── */
+  .carbon-surface {
+    background-color: var(--surface);
+    background-image:
+      linear-gradient(
+        45deg,
+        rgba(255,255,255,0.02) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255,255,255,0.02) 50%,
+        rgba(255,255,255,0.02) 75%,
+        transparent 75%
+      );
+    background-size: 4px 4px;
+  }
+
+  /* ── DRS badge for poll slides ── */
+  .poll-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 255, 135, 0.1);
+    border: 1px solid rgba(0, 255, 135, 0.3);
+    color: var(--timing-green);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 6px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .poll-badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--timing-green);
+    border-radius: 50%;
+    animation: drs-pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes drs-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--timing-green); }
+    50% { opacity: 0.4; box-shadow: none; }
+  }
+
+  /* ── Poll container ── */
+  .poll-container {
+    padding: 40px;
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--dim);
+    position: relative;
+    max-width: 700px;
+    overflow: hidden;
+  }
+  .poll-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--timing-green), transparent);
+    border-radius: 12px 12px 0 0;
+  }
+
+  /* ── Mic drop slide ── */
+  .mic-drop .reveal-text {
+    display: inline;
+    background: linear-gradient(90deg, var(--red), #ff4444, var(--yellow));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  /* ── Start lights animation ── */
+  .start-lights {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .start-lights .light {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #333;
+    box-shadow: none;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  .start-lights .light.on {
+    background: #e10600;
+    box-shadow: 0 0 18px rgba(225,6,0,0.7);
+  }
+
+  /* ── Title slide glow ring ── */
+  .title-slide::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(225, 6, 0, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    border-radius: 50%;
+  }
+
+  /* ── Content entrance animations (simple fade only) ── */
+  .slide.active li,
+  .slide.active .compare .box,
+  .slide.active .callout,
+  .slide.active .callout-warning {
+    animation: contentIn 0.3s ease forwards;
+  }
+  @keyframes contentIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: none; }
+    #progress { transition: none; }
+    .start-lights .light { transition: none; background: #333 !important; box-shadow: none !important; }
+    .mic-drop .reveal-text { animation: none; }
+    .poll-badge::before { animation: none; }
+    .slide.active li,
+    .slide.active .compare .box,
+    .slide.active .callout,
+    .slide.active .callout-warning { animation: none; }
+  }
+
+  /* ── Print stylesheet ── */
+  @media print {
+    body { overflow: visible; height: auto; }
+    body::after { display: none; }
+    .deck { position: static; }
+    .slide {
+      position: static !important;
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      page-break-after: always;
+      min-height: 100vh;
+      padding: 40px;
+      border-bottom: 2px solid #ccc;
+    }
+    .slide::before,
+    .checkered-bg,
+    #progress,
+    #counter,
+    #section-label,
+    #presenter-btn,
+    .start-lights { display: none !important; }
+    * { color: #000 !important; background: #fff !important; }
+    .accent { color: #e10600 !important; }
+    h1, h2, h3 { color: #000 !important; -webkit-text-fill-color: #000 !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck" role="region" aria-label="Presentation slides" aria-live="polite">
+
+<!-- ===== SLIDE 1: TITLE ===== -->
+<div class="slide title-slide" data-section="Qualifying Lap" data-notes="Don't say anything yet. Walk up, open ElevenLabs on screen, and immediately type: 'Welcome to AVU 2026. Today, the AI Committee is excited to share how artificial intelligence is transforming the way we work at Projection. Buckle up — it's going to be a fast ride.' Hit generate. Let the AI voice play. Let the room react. THEN start talking." tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 1: Title">
+  <div class="checkered-bg"></div>
+  <div class="start-lights">
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+  </div>
+  <h1>AVU 2026</h1>
+  <p class="subtitle">AI Committee Presentation</p>
+</div>
+
+<!-- ===== SLIDE 2 ===== -->
+<div class="slide" data-section="Qualifying Lap" data-notes="'That voice you just heard? Created by AI in about 10 seconds. No voice actor, no studio, no waiting. This is the kind of thing we're going to show you today — practical ways AI can make your job easier and faster. I'm CJ, and I'm joined by Jose, Sean, and Katie — your AI Committee.'">
+  <h2>That voice was created by AI</h2>
+  <p class="big-text" style="margin-top:20px">In about <span class="accent">10 seconds</span>.</p>
+</div>
+
+<!-- ===== SLIDE 3 ===== -->
+<div class="slide" data-section="Qualifying Lap" data-notes="'Before we dive in, let's see where we're starting. Scan the QR code and answer honestly — no judgment. This helps us understand what you need.' (Wait for responses, react to results) 'Interesting! Whether you're using it daily or have never tried it, you're in the right place.'">
+  <div class="poll-badge">AUDIENCE DRS OPEN</div>
+  <h2>Quick Pit Stop</h2>
+  <p class="subtitle">Let's see where we are</p>
+  <div class="poll-container" style="margin:30px 0">
+    <p style="font-size:1.1rem;color:var(--gray);margin-bottom:12px">[QR CODE FOR SLIDO]</p>
+    <h3 style="color:var(--white);font-size:1.2rem;text-transform:none;letter-spacing:0;display:block;padding:0;background:none;border:none">Have you used AI for work in the past month?</h3>
+  </div>
+  <ul class="poll-options">
+    <li>Yes, regularly</li>
+    <li>Yes, a few times</li>
+    <li>No, but I'm curious</li>
+    <li>What's AI?</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 4 ===== -->
+<div class="slide" data-section="Qualifying Lap" data-notes="'Here's our route today. We're going to show you real examples from real Projection workflows — not theory, actual stuff we do. We'll give you some guardrails to use AI safely. We'll look at where the industry is going. And we've got something exciting to reveal at the end. Let's go.'">
+  <h2>What We're Covering Today</h2>
+  <ul style="margin-top:20px">
+    <li>Real ways Projection employees are using AI <span class="accent">RIGHT NOW</span></li>
+    <li>Best practices to keep you and clients safe</li>
+    <li>Where the industry is heading</li>
+    <li>What's coming next for Projection</li>
+    <li>A surprise at the end…</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 5 ===== -->
+<div class="slide" data-section="Qualifying Lap" data-notes="'I want to be upfront. Some of our competitors have been using AI for a while now — for proposals, renderings, production workflows. We're a bit behind. But that's actually fine, because we get to learn from what works and skip what doesn't. Today is our pit stop to refuel and get back in the race.'">
+  <h2>Let's Be Honest</h2>
+  <p class="big-text" style="margin-top:20px">Projection is <span class="accent">catching up</span> on AI.</p>
+  <p class="subtitle" style="margin-top:24px">That's okay. Here's how we're accelerating.</p>
+</div>
+
+<!-- ===== SLIDE 6: SECTION DIVIDER ===== -->
+<div class="slide section-divider" data-section="Race Day" data-notes="'Now let's get into the meat of it. Each of us is going to share how we actually use AI in our specific roles. This isn't hypothetical — this is what we're doing today.'">
+  <div class="checkered-bg"></div>
+  <h3>Section 2</h3>
+  <h1>Race Day</h1>
+  <p class="subtitle">How we're using AI at Projection</p>
+  <p style="margin-top:12px;color:var(--gray)">Real examples. Real workflows. Real results.</p>
+</div>
+
+<!-- ===== SLIDE 7: LAP 1 INTRO ===== -->
+<div class="slide" data-section="Lap 1 — General Session / NPM" data-notes="'I'll start with General Session and NPM work.'">
+  <h3>Lap 1</h3>
+  <h2>General Session &amp; NPM</h2>
+  <div class="name-card">
+    <p class="name">CJ Vana</p>
+    <p class="role">National Production Manager</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 8 ===== -->
+<div class="slide" data-section="Lap 1 — General Session / NPM" data-notes="'One of the biggest wins we've had is AI-powered captions. During general sessions, we can provide real-time closed captioning. Even better — we can translate on the fly. If someone needs captions in Spanish or Mandarin, AI handles it. This used to require expensive third-party services or wasn't possible at all.'">
+  <h2>AI Captions &amp; Translation</h2>
+  <ul style="margin-top:20px">
+    <li>Real-time closed captioning during sessions</li>
+    <li>Live translation for international attendees</li>
+    <li>No more expensive captioning services for simple needs</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 9 ===== -->
+<div class="slide" data-section="Lap 1 — General Session / NPM" data-notes="'When we got new wireless mic racks, I needed documentation for our local crews. I used to spend hours writing these guides for our QL5 racks and comm racks. We happened to have a training session with SoundDevices at the EDC, i took the transcript, threw it in AI, and had it make me a long format training doc, and a quick one pager with settings and configs locals need to know. The 5-page guide and the quick one-sheet that lives with the racks? Done in under an hour. And it&apos;s actually better organized than what I would have written from scratch.'">
+  <h2>Training Documentation</h2>
+  <div class="compare" style="margin-top:30px">
+    <div class="box before">
+      <h3>Before</h3>
+      <p>Hours writing manuals</p>
+    </div>
+    <div class="box after">
+      <h3>After</h3>
+      <p>Minutes with AI assistance</p>
+    </div>
+  </div>
+  <div style="margin-top:30px;text-align:left;max-width:700px">
+    <p style="color:var(--gray);margin-bottom:8px">Example: New wireless mic rack documentation</p>
+    <ul>
+      <li>5-page technical guide</li>
+      <li>1-page quick reference sheet</li>
+      <li>Created in under an hour</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== SLIDE 10 ===== -->
+<div class="slide" data-section="Lap 1 — General Session / NPM" data-notes="'Here's one I'm working on more. You know how post-show reports can be painful? You've got scattered notes, you're exhausted, and you need to explain to the client why there might be extra charges. I can dump my rough notes into AI and get a professional, client-ready summary. It frames things diplomatically and doesn&apos;t miss details I might forget. Let&apos;s try it.'">
+  <h2>Post-Show Reporting</h2>
+  <p class="subtitle" style="margin-bottom:30px">Turn messy notes into polished client reports</p>
+  <div class="compare">
+    <div class="box before">
+      <h3>Input</h3>
+      <p style="font-style:italic;color:var(--gray)">"GS ran 12 min over, keynote had tech issues with confidence monitor, extra labor for extended strike"</p>
+    </div>
+    <div class="box after">
+      <h3>Output</h3>
+      <p>Professional summary explaining timeline, issues, and any cost implications</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11 ===== -->
+<div class="slide" data-section="Lap 1 — General Session / NPM" data-notes="'This one's fun. I've been generating royalty-free music with AI. Walk-in music, stingers, session bumpers — I've got over 250 gigs of it. No licensing issues, no ASCAP concerns. One caveat though: for a full multi-day event, all AI music can start to feel... soulless. It's technically perfect but missing something human. So I use it strategically, mixed with licensed music. Remember what was playing when we came back from break?'">
+  <h2>AI-Generated Music</h2>
+  <ul style="margin-top:20px">
+    <li>Royalty-free walk-in music, stingers, bumpers</li>
+    <li><span class="accent">250GB+</span> library created with AI</li>
+    <li>No licensing headaches</li>
+  </ul>
+  <div class="callout" style="margin-top:30px">
+    <strong>The catch:</strong> Still needs the human touch for long-form use
+  </div>
+</div>
+
+<!-- ===== SLIDE 12 ===== -->
+<div class="slide" data-section="Lap 1 — General Session / NPM" data-notes="'Here's something that still blows my mind. I don't know how to code. Like, at all. But I've built actual working software using AI. The Hyperdeck uploader that Jose uses — automatically pulls recordings and uploads to Dropbox. The SOP chatbot some of you may have used. These are real tools solving real problems, built by someone who couldn't write a line of code a year ago. AI is the great equalizer.'">
+  <h2>Building Tools with AI</h2>
+  <p class="big-text" style="margin:20px 0">I <span class="accent">don't know how to code</span>.</p>
+  <p class="big-text">I've built multiple working software tools.</p>
+  <ul style="margin-top:30px">
+    <li>Hyperdeck auto-uploader to Dropbox</li>
+    <li>SOP chatbot for Projection procedures</li>
+    <li>More in development</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 13: POLL ===== -->
+<div class="slide" data-section="Lap 1 — General Session / NPM" data-notes="'Quick check-in. For those of you in production roles — what task would you love AI help with? Type it in.' (React to responses)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 13: Production Poll">
+  <div class="poll-badge">AUDIENCE DRS OPEN</div>
+  <div class="poll-container">
+    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:8px">[SLIDO POLL]</p>
+    <h2 style="font-size:clamp(1.2rem,2.2vw,1.8rem)">What GS/production task would you want AI to help with?</h2>
+    <p style="margin-top:12px;color:var(--gray)">Open text response</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 14: LAP 2 INTRO ===== -->
+<div class="slide" data-section="Lap 2 — Project Management" data-notes="Jose takes over: 'Thanks CJ. Let me show you how AI helps with the PM side of things.'">
+  <h3>Lap 2</h3>
+  <h2>Project Management</h2>
+  <div class="name-card">
+    <p class="name">Jose Rosa</p>
+    <p class="role">Project Manager</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 15 ===== -->
+<div class="slide" data-section="Lap 2 — Project Management" data-notes="'PMs, you know the drill. Client sends specs. Venue has different specs. We've got our proposal. Trying to make sure everything aligns is tedious and error-prone. Now I drop all the documents into AI and ask it to cross-reference. It finds conflicts I would have missed. \"Hey, client wants a 40-foot screen but venue has a 15-foot ceiling\" — AI catches that.'">
+  <h2>Cross-Referencing Client Documents</h2>
+  <p class="big-text" style="margin:20px 0">Multiple documents from multiple clients?<br>AI can <span class="accent">compare, contrast, and consolidate</span>.</p>
+  <ul style="margin-top:20px">
+    <li>Client specs vs. venue specs vs. our proposal</li>
+    <li>Catch conflicts before they become problems</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 16 ===== -->
+<div class="slide" data-section="Lap 2 — Project Management" data-notes="'For big events with dozens of breakouts, I use AI to validate schedules. Upload the session list, ask it to check for conflicts, gaps, impossible turnovers. It's great. BUT — and this is important — I caught AI making mistakes. It told me Room 203 started at 9am when it was actually 10:30. If I had just trusted it and told the crew the wrong time? Disaster. Always verify. AI is your assistant, not your replacement.'">
+  <h2>Schedule Validation</h2>
+  <p class="big-text" style="margin:16px 0"><span class="accent">90</span> breakout rooms. Hundreds of sessions.</p>
+  <p style="font-size:1.3rem">AI checks for conflicts, errors, gaps.</p>
+  <div class="callout-warning" style="margin-top:30px">
+    <strong>BUT — always verify!</strong><br>
+    AI got a room time wrong. I caught it. If I hadn't…
+  </div>
+</div>
+
+<!-- ===== SLIDE 17 ===== -->
+<div class="slide" data-section="Lap 2 — Project Management" data-notes="'You know how we speak in technical terms? Clients and speakers don't. I use AI to create speaker-ready guidelines. I describe our setup technically, tell AI who's reading it, and it translates. \"The presenter will have a 16:9 confidence monitor displaying their slides and a countdown timer\" becomes something a CEO can actually understand.'">
+  <h2>Speaker-Ready Guidelines</h2>
+  <p class="subtitle" style="margin-bottom:30px">Technical specs → Client-friendly language</p>
+  <div class="callout">
+    <span class="dim">"16:9 confidence monitor with return feed"</span><br><br>
+    becomes something a keynote speaker can <span class="accent">actually follow</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 18 ===== -->
+<div class="slide" data-section="Lap 2 — Project Management" data-notes="'Same thing with client emails. Sometimes I write something and realize — there's no way they're going to understand this. I run it through AI: \"Rewrite this for someone who doesn't know AV terminology.\" The message stays accurate but becomes human. And honestly? Sometimes the AI version is just better.'">
+  <h2>Client Communication</h2>
+  <div class="compare" style="margin-top:30px">
+    <div class="box before">
+      <h3>Before</h3>
+      <p style="font-style:italic">"The asymmetric screen orientation necessitates adjusted throw ratios…"</p>
+    </div>
+    <div class="box after">
+      <h3>After</h3>
+      <p>"We'll adjust the projector positioning to fit your screen shape perfectly."</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 19: POLL ===== -->
+<div class="slide" data-section="Lap 2 — Project Management" data-notes="'Let's check the temperature. How confident are you feeling about AI right now?' (React to results, reassure the nervous ones)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 19: Confidence Poll">
+  <div class="poll-badge">AUDIENCE DRS OPEN</div>
+  <div class="poll-container">
+    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:8px">[SLIDO POLL]</p>
+    <h2 style="font-size:clamp(1.2rem,2.2vw,1.8rem)">How confident are you in using AI for work?</h2>
+  </div>
+  <ul class="poll-options" style="margin-top:20px">
+    <li><span class="accent">1</span> — Not at all</li>
+    <li><span class="accent">2</span> — A little nervous</li>
+    <li><span class="accent">3</span> — Somewhat confident</li>
+    <li><span class="accent">4</span> — Pretty confident</li>
+    <li><span class="accent">5</span> — I'm already an AI pro</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 20: LAP 3 INTRO ===== -->
+<div class="slide" data-section="Lap 3 — Account Management" data-notes="Sean takes over: 'Alright, from the sales and account management side.'">
+  <h3>Lap 3</h3>
+  <h2>Account Management</h2>
+  <div class="name-card">
+    <p class="name">Sean Ewell</p>
+    <p class="role">Account Manager</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 21 ===== -->
+<div class="slide" data-section="Lap 3 — Account Management" data-notes="'I've been using ChatGPT long enough that it's learned how I write. I can describe what I need to say, and it drafts an email in my voice. Seriously — it knows my style. Most of my client emails now need maybe two tweaks before sending. What used to take 15-20 minutes is now 2-3. That adds up.'">
+  <h2>Email Drafting</h2>
+  <p class="big-text" style="margin:16px 0">AI has learned my communication style</p>
+  <ul style="margin-top:20px">
+    <li>First drafts in seconds</li>
+    <li>Usually ready to send with minimal edits</li>
+  </ul>
+  <p style="margin-top:30px;font-size:1.3rem">My emails used to take <span class="dim">15–20 minutes</span>. Now: <span class="accent">2–3 minutes</span>.</p>
+</div>
+
+<!-- ===== SLIDE 22 ===== -->
+<div class="slide" data-section="Lap 3 — Account Management" data-notes="'I have AI monitoring industry publications and websites for my top prospects. Every quarter it gives me a report — upcoming events, organizational news, budget information when it's public. I'm working on rolling this out for all the AMs. Imagine knowing a prospect is planning a big event before they even reach out to us.'">
+  <h2>Prospecting Research</h2>
+  <ul style="margin-top:20px">
+    <li>AI monitors industry publications</li>
+    <li>Reports quarterly on my top <span class="accent">25 prospects</span></li>
+    <li>Finds event dates, organization news, opportunities</li>
+  </ul>
+  <p class="subtitle" style="margin-top:24px">Working on expanding this to the whole AM team</p>
+</div>
+
+<!-- ===== SLIDE 23 ===== -->
+<div class="slide" data-section="Lap 3 — Account Management" data-notes="'When an RFP has technical questions I'm not 100% on, AI helps. It gives me talking points and technical context that I can refine with my knowledge of the client and our capabilities. Better answers lead to better conversations.'">
+  <h2>Proposal Assistance</h2>
+  <p class="big-text" style="margin:16px 0">RFPs with tricky questions?</p>
+  <ul style="margin-top:20px">
+    <li>AI helps draft talking points</li>
+    <li>Provides technical context I can refine</li>
+  </ul>
+  <p class="subtitle" style="margin-top:24px">Clients ask better questions when we give better answers</p>
+</div>
+
+<!-- ===== SLIDE 24 ===== -->
+<div class="slide" data-section="Lap 3 — Account Management" data-notes="'Read AI — if you're not using this, start today. It joins my calls, transcribes everything, pulls out action items. Kelsey's been using it for our AM meetings. We never miss a follow-up anymore. And it's free.'">
+  <h2>Meeting Notes</h2>
+  <p class="big-text" style="margin:16px 0">Read AI captures every call</p>
+  <ul style="margin-top:20px">
+    <li>Automatic transcription</li>
+    <li>Action items extracted</li>
+    <li>Shared with the team</li>
+  </ul>
+  <p style="margin-top:24px;font-size:1.2rem"><span class="accent">Free tool</span>, massive time saver</p>
+</div>
+
+<!-- ===== SLIDE 25: LAP 4 INTRO ===== -->
+<div class="slide" data-section="Lap 4 — Admin & Marketing" data-notes="Katie takes over: 'And now from the admin side — where AI helps with all the things that keep Projection running.'">
+  <h3>Lap 4</h3>
+  <h2>Admin &amp; Marketing</h2>
+  <div class="name-card">
+    <p class="name">Katie Lafferty</p>
+    <p class="role">Office Administration</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 26 ===== -->
+<div class="slide" data-section="Lap 4 — Admin & Marketing" data-notes="'I've had to work with Microsoft Power Automate for some workflows. It needs code sometimes. I don't code. So I ask AI — not just to write the code, but to explain it. \"Write this code and explain what each part does.\" I'm actually learning while getting my work done.'">
+  <h2>Power Automate &amp; Coding Help</h2>
+  <p class="big-text" style="margin:16px 0">"I need code and I <span class="accent">don't code</span>"</p>
+  <ul style="margin-top:20px">
+    <li>AI writes the snippets</li>
+    <li>AI explains how they work</li>
+    <li>AI teaches while it helps</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 27 ===== -->
+<div class="slide" data-section="Lap 4 — Admin & Marketing" data-notes="'Honestly, my favorite use is just... not Googling. When I need to understand something, AI gives me a full explanation, not a list of links to sift through. Whether it's a process I don't know, a term I don't understand, or how to do something in Excel — I just ask and get an answer.'">
+  <h2>Instant Learning</h2>
+  <p class="big-text" style="margin:16px 0">"I don't want to Google it"</p>
+  <ul style="margin-top:20px">
+    <li>AI gives complete answers <span class="accent">in context</span></li>
+    <li>Not 10 blue links — actual explanations</li>
+    <li>Whatever you need to learn, just ask</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 28 ===== -->
+<div class="slide" data-section="Lap 4 — Admin & Marketing" data-notes="'When proposals have AV-specific questions and I'm not sure of the answer, AI helps me understand AND respond. It's like having a patient teacher who never makes you feel dumb for asking.'">
+  <h2>Proposal RFP Responses</h2>
+  <p class="big-text" style="margin:16px 0">AV questions in proposals I don't know?</p>
+  <ul style="margin-top:20px">
+    <li>AI gives me talking points</li>
+    <li>I learn AND deliver better answers</li>
+  </ul>
+  <p class="dim" style="margin-top:24px;font-style:italic">(I definitely didn't know what a 3-to-1 screen was before AI helped)</p>
+</div>
+
+<!-- ===== SLIDE 29 ===== -->
+<div class="slide" data-section="Lap 4 — Admin & Marketing" data-notes="'Here's a trick I want to share. When I use external AI tools, I never use real client names. Astro becomes Hubba Bubba. Projection becomes \"an AV company.\" It's a simple habit that protects client confidentiality. I'll talk about this more in our best practices section.'">
+  <h2>The Hubba Bubba Trick</h2>
+  <p class="big-text" style="margin:20px 0">I never use real client names in external AI</p>
+  <div style="margin-top:20px;text-align:left;max-width:600px">
+    <p style="font-size:1.3rem;padding:8px 0"><span class="dim">"Astro"</span> → <span class="accent">"Hubba Bubba"</span></p>
+    <p style="font-size:1.3rem;padding:8px 0"><span class="dim">"Projection"</span> → <span class="accent">"an AV company"</span></p>
+  </div>
+  <p class="subtitle" style="margin-top:20px">Simple habit, big protection</p>
+</div>
+
+<!-- ===== SLIDE 30: POLL ===== -->
+<div class="slide" data-section="Lap 4 — Admin & Marketing" data-notes="'Let's see what's on your radar.' (React to results)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 30: AI Tools Poll">
+  <div class="poll-badge">AUDIENCE DRS OPEN</div>
+  <div class="poll-container">
+    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:8px">[SLIDO POLL]</p>
+    <h2 style="font-size:clamp(1.2rem,2.2vw,1.8rem)">What AI tools have you heard of?</h2>
+    <p style="margin-top:8px;color:var(--gray)">Select all that apply</p>
+  </div>
+  <ul class="poll-options" style="margin-top:20px">
+    <li>ChatGPT</li>
+    <li>Microsoft Copilot</li>
+    <li>Google Gemini</li>
+    <li>Claude</li>
+    <li>ElevenLabs</li>
+    <li>Midjourney / DALL-E</li>
+    <li>None of these</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 31: LAP 5 INTRO ===== -->
+<div class="slide" data-section="Lap 5 — Warehouse & Logistics" data-notes="'We don't have a warehouse rep on the committee yet, but here are areas where AI could help logistics.'">
+  <h3>Lap 5</h3>
+  <h2>Warehouse &amp; Logistics</h2>
+  <p class="subtitle">Opportunities we're exploring</p>
+</div>
+
+<!-- ===== SLIDE 32 ===== -->
+<div class="slide" data-section="Lap 5 — Warehouse & Logistics" data-notes="'Equipment docs, packing manifests, damage reports — all text-heavy tasks that AI could accelerate. If you're in logistics and see opportunities, please reach out. We want to expand the committee's reach.'">
+  <h2>Warehouse AI Opportunities</h2>
+  <ul style="margin-top:20px">
+    <li><strong>Equipment documentation</strong> — Instant lookup of specs, manuals</li>
+    <li><strong>Packing manifests</strong> — Generate organized load lists</li>
+    <li><strong>Damage reports</strong> — Structured documentation</li>
+    <li><strong>Gear tracking</strong> — Better return and inventory notes</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 33: SECTION DIVIDER ===== -->
+<div class="slide section-divider" data-section="Pit Stop — Best Practices" data-notes="'Alright, we've shown you what's possible. Now let's talk about how to do it safely and effectively.'">
+  <div class="checkered-bg"></div>
+  <h3>Section 3</h3>
+  <h1>Pit Stop</h1>
+  <p class="subtitle">Best Practices for AI at Projection</p>
+</div>
+
+<!-- ===== SLIDE 34 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'Four simple principles. Memorize these and you'll be fine.'">
+  <h2>The 4 Principles</h2>
+  <ul class="principles" style="margin-top:24px">
+    <li>Always verify AI output</li>
+    <li>Protect sensitive data</li>
+    <li>AI assists, YOU decide</li>
+    <li>Ask for sources</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 35 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'AI can be wrong. And here's the scary part — it's wrong with complete confidence. It won&apos;t say &quot;I think&quot; or &quot;maybe.&quot; It'll tell you Room 203 is at 9am like it's absolute fact. Jose caught that mistake. If he hadn't, crew would have been set up wrong for 90 minutes. ALWAYS verify critical information.'">
+  <h2>Principle 1: Always Verify</h2>
+  <p class="big-text" style="margin:20px 0">AI makes mistakes. <span class="accent">Confidently.</span></p>
+  <div class="callout-warning" style="margin-top:20px">
+    It once told Jose a breakout was at 9am. It was 10:30.
+  </div>
+  <p style="margin-top:24px;font-size:1.3rem">Trust but verify — <span class="accent">EVERY</span> time.</p>
+</div>
+
+<!-- ===== SLIDE 36 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'When using external tools like ChatGPT, be careful what you put in. Don't paste screenshots of IntelliEvent, Sugar, financial documents. Use fake names like Katie does. The internal tool we're building will be different — designed for confidential use. But until then, caution with external tools.'">
+  <h2>Principle 2: Protect Sensitive Data</h2>
+  <div class="columns" style="margin-top:24px">
+    <div class="col">
+      <h3 style="color:var(--yellow)">External AI (ChatGPT, etc.)</h3>
+      <ul>
+        <li>Don't paste screenshots of IE, CRM, financials</li>
+        <li>Use fake names for clients (Hubba Bubba!)</li>
+        <li>Be thoughtful about what you share</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3>Internal Projection AI (coming soon)</h3>
+      <ul>
+        <li>Built for confidential use</li>
+        <li>Safe for real data</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 37 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'AI doesn't replace your judgment — it enhances it. When you send that email, your name is on it. When you give that answer, you're accountable. AI helps you get there faster, but you make the final call.'">
+  <h2>Principle 3: AI Assists, You Decide</h2>
+  <p class="big-text" style="margin:20px 0">AI is your <span class="accent">co-pilot</span>, not your autopilot.</p>
+  <ul style="margin-top:20px">
+    <li>You're responsible for the final output</li>
+    <li>Your name is on that email</li>
+    <li>Your expertise validates the answer</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 38 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'When AI tells you something, ask where it came from. &quot;Can you cite your sources?&quot; It'll give you links to verify. This does two things: helps you fact-check, and helps you actually learn rather than just copy-pasting.'">
+  <h2>Principle 4: Ask for Sources</h2>
+  <p class="big-text" style="margin:20px 0">"Where did you get that information?"</p>
+  <ul style="margin-top:20px">
+    <li>AI can cite sources and provide links</li>
+    <li>Makes verification easier</li>
+    <li>Helps you <span class="accent">learn</span>, not just copy</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 39 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'Three things to avoid.'">
+  <h2>The 3 Don'ts</h2>
+  <ul class="principles" style="margin-top:24px">
+    <li>Don't screenshot confidential documents</li>
+    <li>Don't trust blindly</li>
+    <li>Don't skip the human touch</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 40 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'Screenshots of our systems should never go into external AI. Not IE, not CRM, not client financials or credit card forms. Just don't. There are other ways to get AI help without exposing sensitive data.'">
+  <h2>Don't Screenshot Confidential Docs</h2>
+  <p class="subtitle" style="margin-bottom:20px">Never paste these into external AI</p>
+  <ul style="margin-top:16px">
+    <li>IntelliEvent screens</li>
+    <li>Sugar CRM data</li>
+    <li>Client financials</li>
+    <li>Credit card authorizations</li>
+    <li>Contracts</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 41 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'AI doesn't say &quot;I don&apos;t know.&quot; It invents something plausible. Model numbers, dates, prices, specs — it can be wrong about any of it. Verify anything that matters before you act on it.'">
+  <h2>Don't Trust Blindly</h2>
+  <p class="big-text" style="margin:20px 0">AI will never say <span class="accent">"I don't know"</span></p>
+  <p class="big-text">It will make something up instead.</p>
+  <p style="margin-top:30px;font-size:1.3rem">Verify numbers. Verify dates. Verify names.<br>Verify <span class="accent">anything that matters</span>.</p>
+</div>
+
+<!-- ===== SLIDE 42 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'People can tell when something is pure AI output. It's technically correct but weirdly soulless. Add your personality. Rewrite key sentences. Make it sound like you. The best AI output is the one nobody can tell was AI-assisted.'">
+  <h2>Don't Skip the Human Touch</h2>
+  <p class="big-text" style="margin:20px 0">Clients know when something is AI-generated.</p>
+  <p style="font-size:1.3rem;color:var(--gray)">It sounds… off. Robotic. Generic.</p>
+  <ul style="margin-top:24px">
+    <li>Add your personality</li>
+    <li>Rewrite in your voice</li>
+    <li>Make it <span class="accent">human</span></li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 43 ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'To be clear: these are best practices, not fireable offenses. We're encouraging AI use, not mandating it. And these same principles apply to AI built into our tools — Copilot in Windows, AI features in Adobe, Zoom's transcription. Same thoughtfulness.'">
+  <h2>Important Clarifications</h2>
+  <ul style="margin-top:20px">
+    <li>These are <span class="accent">BEST PRACTICES</span>, not HR policy</li>
+    <li>AI usage is <span class="accent">ENCOURAGED</span> but not required</li>
+    <li>Same rules for built-in AI (Copilot, Adobe AI, etc.)</li>
+    <li>Use your judgment — you know your clients</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 44: POLL ===== -->
+<div class="slide" data-section="Pit Stop — Best Practices" data-notes="'What are you most worried about with AI? Let's see what's on your mind.' (Acknowledge concerns, address any common themes)" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 44: Concerns Poll">
+  <div class="poll-badge">AUDIENCE DRS OPEN</div>
+  <div class="poll-container">
+    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:8px">[SLIDO POLL]</p>
+    <h2 style="font-size:clamp(1.2rem,2.2vw,1.8rem)">What's your biggest concern about using AI?</h2>
+    <p style="margin-top:12px;color:var(--gray)">Word cloud — open text</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 45: SECTION DIVIDER ===== -->
+<div class="slide section-divider" data-section="Addressing the Fears" data-notes="'Let's address this directly.'">
+  <h2>Let's Talk About the Elephant</h2>
+  <p class="big-text" style="margin-top:20px">"Is AI going to <span class="accent">take my job</span>?"</p>
+</div>
+
+<!-- ===== SLIDE 46 ===== -->
+<div class="slide" data-section="Addressing the Fears" data-notes="'AI isn't going to replace you. You're not going to come in Monday and find a robot at your desk. But here's the reality: someone who uses AI well can be dramatically more productive. The question isn't whether AI will replace humans — it's whether you'll be the human who knows how to use these tools.'">
+  <h2>The Honest Answer</h2>
+  <p class="big-text" style="margin:20px 0">AI is <span class="accent">not</span> going to take your job.</p>
+  <p class="big-text">The person who uses AI effectively <span class="accent">might</span>.</p>
+</div>
+
+<!-- ===== SLIDE 47 ===== -->
+<div class="slide" data-section="Addressing the Fears" data-notes="'Your expertise, your client relationships, your problem-solving — AI can't replace those. What it CAN do is handle the tedious stuff faster. First drafts. Research. Formatting. Checking. So you can spend more time on the work that actually requires you.'">
+  <h2>What AI Actually Does</h2>
+  <p class="big-text" style="margin:20px 0">AI doesn't replace expertise.<br>It <span class="accent">AMPLIFIES</span> it.</p>
+  <p style="font-size:1.3rem;margin-top:20px">You + AI = Faster, more consistent, less tedious work</p>
+  <p class="subtitle" style="margin-top:20px">You're still the expert. AI is just a really good assistant.</p>
+</div>
+
+<!-- ===== SLIDE 48 ===== -->
+<div class="slide" data-section="Addressing the Fears" data-notes="'It's okay to be skeptical. Most of us were. Katie stayed away from AI at first because of the early warnings about privacy. Then she tried it and realized how helpful it could be. No one's going to force you to use AI. But we're asking you to try it once. See what happens.'">
+  <h2>It's Okay to Be Skeptical</h2>
+  <p class="big-text" style="margin:20px 0">Many of us were skeptical too.<br>Then we <span class="accent">tried it</span>.</p>
+  <p style="font-size:1.3rem;margin-top:20px">No one is forcing you to use AI.<br>But we encourage you to <span class="accent">TRY</span> it.</p>
+</div>
+
+<!-- ===== SLIDE 49 ===== -->
+<div class="slide" data-section="Addressing the Fears" data-notes="'The AI field is so new that everyone is figuring it out. The &quot;experts&quot; are people who started using it 18 months ago. We're all learning. If you have questions, ask them. There are no stupid questions when the technology is this new.'">
+  <h2>This Is New for Everyone</h2>
+  <p class="big-text" style="margin:20px 0">Even the experts are figuring it out.</p>
+  <p style="font-size:1.3rem">We're all learning together.</p>
+  <p style="font-size:1.5rem;margin-top:30px;color:var(--red);font-weight:700">There are no stupid questions.</p>
+</div>
+
+<!-- ===== SLIDE 50: SECTION DIVIDER ===== -->
+<div class="slide section-divider" data-section="Industry Trends" data-notes="'Let's zoom out and look at the bigger picture. Where is our industry going with AI?'">
+  <div class="checkered-bg"></div>
+  <h3 style="color:var(--yellow)">Yellow Flag</h3>
+  <h1>Industry Alert</h1>
+  <p class="subtitle">Where the AV/Events Industry is Heading</p>
+</div>
+
+<!-- ===== SLIDE 51 ===== -->
+<div class="slide" data-section="Industry Trends" data-notes="'AI is becoming standard in live production. Real-time captions and translation — we're already doing this. Automated camera tracking for hybrid events. Voice enhancement. This is happening now across the industry.'">
+  <h2>AI in Live Production</h2>
+  <ul style="margin-top:20px">
+    <li>Real-time captioning <span class="accent">(we're doing this!)</span></li>
+    <li>Live translation</li>
+    <li>Automated camera tracking</li>
+    <li>Voice enhancement and noise reduction</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 52 ===== -->
+<div class="slide" data-section="Industry Trends" data-notes="'On the sales side, AI is transforming proposals. Some companies are generating 3D venue visualizations instantly. RFP responses are semi-automated. Pricing is being predicted based on historical data. The companies adopting these tools are moving faster.'">
+  <h2>AI in Sales &amp; Proposals</h2>
+  <ul style="margin-top:20px">
+    <li>Automated RFP responses</li>
+    <li>Instant 3D venue visualization</li>
+    <li>Predictive pricing</li>
+    <li>Client need analysis</li>
+    <li>Personalized proposals at scale</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 53 ===== -->
+<div class="slide" data-section="Industry Trends" data-notes="'The companies investing in AI capabilities now are going to have serious competitive advantages. Faster proposals, better production tools, more personalized service. That's why we're here today. That's why we're building internal tools. We're making that investment.'">
+  <h2>The Competitive Landscape</h2>
+  <p class="big-text" style="margin:20px 0">The AV companies investing in AI now<br>will have significant advantages in <span class="accent">2–3 years</span>.</p>
+  <p style="font-size:1.5rem;margin-top:24px;font-weight:600">We're making that investment.</p>
+</div>
+
+<!-- ===== SLIDE 54: SECTION DIVIDER ===== -->
+<div class="slide section-divider" data-section="Future Roadmap" data-notes="'Let's talk about what's coming at Projection specifically.'">
+  <div class="checkered-bg"></div>
+  <h3>Final Lap</h3>
+  <h1>What's Next</h1>
+  <p class="subtitle">Projection's AI Roadmap</p>
+</div>
+
+<!-- ===== SLIDE 55 ===== -->
+<div class="slide" data-section="Future Roadmap" data-notes="'Phase 1 is an internal AI chatbot. This runs on our own server, on our network. It can search our Dropbox and OneNote. You'll be able to ask it about past shows, find SOPs, look up venue information — all securely. Nothing leaves Projection systems.'">
+  <span class="phase-badge">Now in Development</span>
+  <h2>Phase 1: Internal AI Chatbot</h2>
+  <ul style="margin-top:20px">
+    <li>Runs on Projection hardware</li>
+    <li>Searches our documents (Dropbox, OneNote)</li>
+    <li>Safe for confidential information</li>
+    <li>No data leaves our systems</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 56 ===== -->
+<div class="slide" data-section="Future Roadmap" data-notes="'Imagine asking: &quot;What loading issues have we had at Moscone?&quot; and getting a summary from all our post-show reports. Or &quot;Find the speaker-ready template&quot; and having it pulled up instantly. That's what we're building.'">
+  <h2>What You'll Be Able to Do</h2>
+  <div style="margin-top:20px;text-align:left;max-width:800px">
+    <div class="callout" style="margin:16px 0">"What were the loading dock issues at Moscone last year?"</div>
+    <div class="callout" style="margin:16px 0">"Find the speaker-ready template for healthcare clients"</div>
+    <div class="callout" style="margin:16px 0">"What did we charge for LED walls in 2025?"</div>
+  </div>
+  <p style="margin-top:20px;font-size:1.2rem">All answered from <span class="accent">Projection's own data</span>.</p>
+</div>
+
+<!-- ===== SLIDE 57 ===== -->
+<div class="slide" data-section="Future Roadmap" data-notes="'Phase 2 adds image generation. For brainstorming, mockups, quick visualizations. This is for concepting, not final deliverables. Human designers will always do the finished work.'">
+  <span class="phase-badge">Coming Later in 2026</span>
+  <h2>Phase 2: Image Generation</h2>
+  <ul style="margin-top:20px">
+    <li>Creative brainstorming and mockups</li>
+    <li>Event visualization concepts</li>
+    <li>Marketing materials</li>
+  </ul>
+  <p class="subtitle" style="margin-top:24px">Note: Final artwork always done by humans</p>
+</div>
+
+<!-- ===== SLIDE 58 ===== -->
+<div class="slide" data-section="Future Roadmap" data-notes="'Beyond that — department-specific tools, deeper integrations with IntelliEvent and Sugar. But honestly, this roadmap will evolve based on what YOU tell us you need. That's why your feedback today matters.'">
+  <h2>Phase 3 &amp; Beyond</h2>
+  <ul style="margin-top:20px">
+    <li>Department-specific AI tools</li>
+    <li>Deeper system integrations (IE, CRM)</li>
+    <li>Whatever <span class="accent">YOU</span> need</li>
+  </ul>
+  <p class="subtitle" style="margin-top:24px">This roadmap will evolve based on your feedback.</p>
+</div>
+
+<!-- ===== SLIDE 59: SECTION DIVIDER ===== -->
+<div class="slide section-divider" data-section="Checkered Flag" data-notes="'Alright, finale time. Remember I mentioned a surprise?'">
+  <div class="checkered-bg"></div>
+  <h1>Checkered Flag</h1>
+  <p class="subtitle">The moment you've been waiting for…</p>
+</div>
+
+<!-- ===== SLIDE 60 ===== -->
+<div class="slide" data-section="Checkered Flag" data-notes="'We've been building something specifically for Projection employees…'">
+  <h2>Introducing…</h2>
+  <p class="big-text dim" style="margin-top:20px" aria-hidden="true">&nbsp;</p>
+</div>
+
+<!-- ===== SLIDE 61 ===== -->
+<div class="slide" data-section="Checkered Flag" data-notes="IF CHATBOT IS READY: Show it live. Ask it a real question about Projection — a venue, a past show, an SOP. Let the audience see it work. 'Let me show you what we've been building. This is our internal AI. Watch what happens when I ask it about [specific Projection topic]…' IF CHATBOT NOT READY: 'The internal tool is still in final testing, but let me show you something else cool…' Then do live Claude coding demo — have Claude help build something in real-time, or show the SOP chatbot.">
+  <h2>Live Demo</h2>
+  <p class="big-text" style="margin:20px 0">Internal AI Chatbot</p>
+  <div style="padding:40px;background:var(--surface);border-radius:16px;border:1px solid var(--dim);max-width:700px;margin-top:20px">
+    <p style="color:var(--gray);font-style:italic">[Live demonstration]</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 62 ===== -->
+<div class="slide" data-section="Checkered Flag" data-notes="'This is version one. It will get smarter as we add more data and refine it. We're excited to get this into your hands.'">
+  <h2>This Is Just the Beginning</h2>
+  <p class="big-text" style="margin:20px 0">Available to all full-time employees <span class="accent">soon</span>.</p>
+</div>
+
+<!-- ===== SLIDE 63 ===== -->
+<div class="slide" data-section="Checkered Flag" data-notes="'We need your help with one thing — naming it. Scan and vote. We've got a few options, or write in your own idea.' (Give 30-60 seconds for voting, then reveal results) 'And the winner is…'">
+  <div class="poll-badge">AUDIENCE DRS OPEN</div>
+  <h2>Help Us Name It!</h2>
+  <div class="poll-container" style="margin:20px 0">
+    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:12px">[QR CODE FOR SLIDO]</p>
+    <p style="font-size:1.1rem;font-weight:600">Vote for the name:</p>
+  </div>
+  <ul class="poll-options" style="margin-top:16px">
+    <li><span class="accent">IRIS</span> — Intelligent Resource Information System</li>
+    <li><span class="accent">AVI</span> — Audio Visual Intelligence</li>
+    <li><span class="accent">ProjBot</span></li>
+    <li>Write your own suggestion</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 64 ===== -->
+<div class="slide" data-section="Checkered Flag" data-notes="'Here's your call to action. This week, try AI for one thing. One task. Write an email with ChatGPT. Summarize meeting notes. Ask it a question. Just try. See what happens. I think you'll be surprised.'">
+  <h2>Your Challenge</h2>
+  <p class="big-text" style="margin:20px 0">Try AI for <span class="accent">ONE</span> work task this week.</p>
+  <p style="font-size:1.3rem;margin-top:16px">Any task. Any tool. Just try.</p>
+  <p style="font-size:1.5rem;margin-top:24px;font-weight:600">See what happens.</p>
+</div>
+
+<!-- ===== SLIDE 65 ===== -->
+<div class="slide" data-section="Checkered Flag" data-notes="'If you have ideas for internal AI apps — or normal apps that would make your life easier — talk to CJ or someone on the AI Committee. We&apos;re here to make your work life more productive.'">
+  <h2>Stay Connected</h2>
+  <p class="big-text" style="margin:16px 0">Talk to <span class="accent">CJ</span> or the <span class="accent">AI Committee</span></p>
+  <ul style="margin-top:20px">
+    <li>Ideas for internal AI apps</li>
+    <li>Apps that would make your life easier</li>
+    <li>Give us feedback</li>
+    <li>We&apos;re here to make your work life more productive</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 66 ===== -->
+<div class="slide" data-section="Checkered Flag" data-notes="'We've put together a one-pager with all the best practices. Scan to download. Print it, keep it at your desk, whatever helps you remember.'">
+  <h2>Your Best Practices Cheat Sheet</h2>
+  <div style="margin:20px 0;padding:30px;background:var(--surface);border-radius:16px;border:1px solid var(--dim);display:flex;align-items:center;gap:30px;justify-content:center">
+    <div style="width:200px;height:200px;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" shape-rendering="crispEdges" width="200" height="200"><path stroke="#f0f0f0" d="M1 1.5h7m2 0h1m1 0h1m4 0h5m2 0h1m2 0h7M1 2.5h1m5 0h1m2 0h1m2 0h1m2 0h2m3 0h2m4 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h1m5 0h1m3 0h1m1 0h2m2 0h1m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m2 0h2m2 0h1m2 0h1m3 0h1m1 0h1m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h5m1 0h3m2 0h1m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h1m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m3 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h3m3 0h1m1 0h1m1 0h1m1 0h2m1 0h2M1 9.5h1m1 0h5m3 0h1m2 0h2m2 0h4m1 0h1m1 0h1m1 0h5M2 10.5h1m5 0h2m2 0h1m1 0h1m1 0h7m1 0h1m2 0h2m1 0h4M2 11.5h1m2 0h6m2 0h6m3 0h2m1 0h1m3 0h1m1 0h2M1 12.5h1m1 0h1m2 0h1m4 0h1m2 0h1m1 0h1m1 0h2m2 0h3m1 0h2m1 0h4M1 13.5h8m1 0h1m4 0h1m1 0h1m2 0h1m2 0h1m2 0h1m1 0h3m2 0h1M1 14.5h1m1 0h2m3 0h3m2 0h2m1 0h1m1 0h5m1 0h1m2 0h1m2 0h4M1 15.5h3m1 0h1m1 0h2m2 0h2m2 0h4m3 0h1m2 0h3m1 0h1m1 0h2M2 16.5h2m2 0h1m1 0h6m1 0h2m2 0h1m1 0h3m2 0h2m1 0h3M2 17.5h1m4 0h2m2 0h1m1 0h4m1 0h1m7 0h1m1 0h3m2 0h1M9 18.5h2m1 0h2m2 0h2m1 0h4m1 0h1m2 0h2m1 0h2m1 0h1M1 19.5h1m1 0h3m1 0h1m1 0h3m3 0h3m1 0h1m2 0h2m3 0h3m1 0h2M5 20.5h1m2 0h1m1 0h1m2 0h4m4 0h3m4 0h5M2 21.5h6m1 0h1m3 0h4m2 0h1m1 0h1m1 0h2m1 0h1m1 0h3m1 0h2M1 22.5h1m2 0h1m4 0h1m2 0h7m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1M1 23.5h1m1 0h2m2 0h3m2 0h1m2 0h1m3 0h1m3 0h1m7 0h2M1 24.5h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h4m1 0h1m4 0h1m2 0h3m2 0h3M1 25.5h1m3 0h1m1 0h1m1 0h2m2 0h1m1 0h1m2 0h1m1 0h2m1 0h1m1 0h5m2 0h1M9 26.5h1m2 0h1m2 0h8m2 0h1m3 0h1m1 0h1m1 0h1M1 27.5h7m5 0h1m2 0h3m2 0h5m1 0h1m1 0h1m1 0h2M1 28.5h1m5 0h1m1 0h1m1 0h4m2 0h3m2 0h1m2 0h1m3 0h4M1 29.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h1m4 0h6m1 0h2M1 30.5h1m1 0h3m1 0h1m1 0h2m1 0h1m2 0h2m1 0h5m3 0h1m2 0h5M1 31.5h1m1 0h3m1 0h1m1 0h1m1 0h3m2 0h3m4 0h1m3 0h2m1 0h2M1 32.5h1m5 0h1m3 0h2m3 0h1m3 0h4m2 0h1m2 0h3M1 33.5h7m1 0h2m3 0h1m1 0h1m1 0h3m2 0h4m1 0h1m3 0h1"/></svg></div>
+    <div style="text-align:left">
+      <p style="font-size:1.3rem;font-weight:600;margin-bottom:8px">Scan for the Cheat Sheet</p>
+      <p style="font-size:1rem;color:var(--gray)">One-pager with all 4 principles &amp; 3 don'ts.<br>Print it, save it, share it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 67 ===== -->
+<div class="slide" data-section="Checkered Flag" data-notes="'We've got time for questions. What's on your mind?' (Use FAQ responses as needed)">
+  <h1>Questions?</h1>
+</div>
+
+<!-- ===== SLIDE 68: FINAL ===== -->
+<div class="slide title-slide" data-section="Checkered Flag" data-notes="'Thanks for your time today. The four of us are here as a resource. Find us, ask questions, tell us what you need. Now get out there and try something new.'">
+  <div class="checkered-bg"></div>
+  <h2>Thank You!</h2>
+  <div style="margin-top:30px;display:flex;gap:40px;flex-wrap:wrap;justify-content:center">
+    <div class="name-card"><p class="name" style="font-size:1.3rem">CJ Vana</p></div>
+    <div class="name-card"><p class="name" style="font-size:1.3rem">Jose Rosa</p></div>
+    <div class="name-card"><p class="name" style="font-size:1.3rem">Sean Ewell</p></div>
+    <div class="name-card"><p class="name" style="font-size:1.3rem">Katie Lafferty</p></div>
+  </div>
+  <p class="subtitle" style="margin-top:20px">Your AI Committee</p>
+  <p style="margin-top:30px;font-size:1.5rem;font-weight:600">Now go try something with AI this week!</p>
+</div>
+
+<!-- ===== SLIDE 69: MIC DROP ===== -->
+<div class="slide title-slide mic-drop" data-section="Checkered Flag" data-notes="Pause for effect. Let this land. 'Every slide. Every layout. Every speaker note. Built by AI in a single session. If that doesn't prove the point of this presentation, I don't know what does.'" tabindex="-1" role="group" aria-roledescription="slide" aria-label="Slide 69: Mic Drop">
+  <div class="checkered-bg"></div>
+  <h3>Oh, one more thing…</h3>
+  <h2 style="margin-top:20px">This entire presentation<br>was <span class="reveal-text">built by AI</span></h2>
+  <p class="big-text" style="margin-top:30px">Every slide. Every layout. Every speaker note.</p>
+  <p style="margin-top:24px;font-size:1.3rem;color:var(--gray)">Still think it can't help with <span class="accent">your</span> job?</p>
+</div>
+
+</div><!-- /deck -->
+
+<div id="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Presentation progress"></div>
+<div id="counter" role="status" aria-live="polite" aria-atomic="true"></div>
+<div id="section-label" aria-live="polite"></div>
+<button id="presenter-btn" aria-label="Open presenter view (keyboard shortcut P)">Presenter View (P)</button>
+
+<script>
+(function() {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let current = 0;
+  let presenterWin = null;
+
+  function go(n) {
+    if (n < 0 || n >= total) return;
+    slides[current].classList.remove('active');
+    slides[current].setAttribute('aria-hidden', 'true');
+    current = n;
+    slides[current].classList.add('active');
+    slides[current].setAttribute('aria-hidden', 'false');
+    slides[current].focus();
+    window.location.hash = '#slide-' + (current + 1);
+    updateUI();
+    syncPresenter();
+  }
+
+  function updateUI() {
+    var pct = Math.round((current + 1) / total * 100);
+    var progressEl = document.getElementById('progress');
+    progressEl.style.width = pct + '%';
+    progressEl.setAttribute('aria-valuenow', pct);
+    document.getElementById('counter').textContent = (current + 1) + '/' + total;
+    document.getElementById('section-label').textContent = slides[current].dataset.section || '';
+  }
+
+  function syncPresenter() {
+    if (presenterWin && !presenterWin.closed) {
+      presenterWin.postMessage({
+        type: 'slide-change',
+        current: current,
+        total: total,
+        notes: slides[current].dataset.notes || '',
+        section: slides[current].dataset.section || '',
+        slideHTML: slides[current].innerHTML,
+        nextHTML: current + 1 < total ? slides[current + 1].innerHTML : null
+      }, '*');
+    }
+  }
+
+  window.openPresenter = function() {
+    if (presenterWin && !presenterWin.closed) {
+      presenterWin.focus();
+      return;
+    }
+    presenterWin = window.open('', 'presenter', 'width=1000,height=700');
+    if (!presenterWin) {
+      alert('Presenter window was blocked. Please allow pop-ups for this page.');
+      return;
+    }
+    presenterWin.document.write(presenterHTML());
+    presenterWin.document.close();
+    setTimeout(syncPresenter, 500);
+  };
+
+  function presenterHTML() {
+    return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Presenter Console</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Racing+Sans+One&display=swap');
+  :root{--bg:#0a0a0a;--surface:#141414;--red:#e10600;--white:#f0f0f0;--gray:#888;--dim:#444;--font:'Inter',sans-serif;--heading:'Racing Sans One','Inter',sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#111;color:var(--white);font-family:var(--font);padding:20px;display:grid;grid-template-columns:1.2fr 0.8fr;grid-template-rows:auto 1fr auto;gap:16px;height:100vh;overflow:hidden}
+  #header{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--dim)}
+  #header h2{font-family:var(--heading);font-size:1rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--red)}
+  #timer{font-variant-numeric:tabular-nums;font-size:1.4rem;font-weight:700}
+  .preview-box{background:var(--bg);border-radius:8px;border:1px solid var(--dim);overflow:hidden;display:flex;flex-direction:column}
+  .preview-box .label{padding:8px 12px;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);border-bottom:1px solid var(--dim)}
+  .preview-box .content{flex:1;padding:20px;overflow:auto;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;transform:scale(0.55);transform-origin:top center}
+  .preview-box .content h1,.preview-box .content h2{font-family:var(--heading);text-transform:uppercase}
+  .preview-box .content h1{font-size:2.5rem}.preview-box .content h2{font-size:1.8rem}
+  .preview-box .content h3{color:var(--red);text-transform:uppercase;letter-spacing:0.08em;font-size:1rem}
+  .preview-box .content .accent{color:var(--red);font-weight:700}
+  .preview-box .content .subtitle{color:var(--gray)}
+  .preview-box .content .dim{color:var(--gray)}
+  .preview-box .content .big-text{font-size:1.6rem;font-weight:300;line-height:1.5}
+  .preview-box .content .name-card .name{font-family:var(--heading);font-size:1.5rem;text-transform:uppercase}
+  .preview-box .content .name-card .role{color:var(--gray);font-size:0.9rem}
+  .preview-box .content ul{list-style:none;text-align:left}
+  .preview-box .content ul li{padding:4px 0;padding-left:1.2em;position:relative}
+  .preview-box .content ul li::before{content:'▸';position:absolute;left:0;color:var(--red);font-weight:700}
+  .preview-box .content .callout{background:var(--surface);border-left:3px solid var(--red);padding:12px 16px;font-style:italic;text-align:left;border-radius:0 6px 6px 0;margin:10px 0;font-size:0.95rem}
+  .preview-box .content .compare{display:flex;gap:16px;width:100%}
+  .preview-box .content .compare .box{flex:1;padding:16px;border-radius:8px;background:var(--surface);border:1px solid var(--dim);text-align:left}
+  .preview-box .content .compare .box.after{border-color:var(--red)}
+  .preview-box .content .compare .box h3{margin-bottom:6px}
+  .preview-box .content .compare .box.before h3{color:var(--gray)}
+  .preview-box .content .compare .box.after h3{color:var(--red)}
+  .preview-box .content .columns{display:flex;gap:30px;text-align:left;width:100%}
+  .preview-box .content .columns .col{flex:1}
+  .preview-box .content .principles{text-align:left;counter-reset:principle}
+  .preview-box .content .principles li{padding-left:2em}
+  .preview-box .content .principles li::before{counter-increment:principle;content:counter(principle);position:absolute;left:0;width:1.5em;height:1.5em;background:var(--red);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8em}
+  .preview-box .content .phase-badge{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:0.7rem;padding:3px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px}
+  .preview-box .content .poll-options li::before{content:'';display:none}
+  .preview-box .content .checkered-bg{display:none}
+  .preview-box .content .section-divider{background:none}
+  #notes-panel{grid-column:1/-1;background:var(--surface);border-radius:8px;padding:16px 20px;overflow-y:auto;max-height:220px;border:1px solid var(--dim)}
+  #notes-panel .label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);margin-bottom:8px}
+  #notes-text{font-size:1rem;line-height:1.7;color:var(--white);font-weight:300}
+  #slide-num{color:var(--gray);font-size:0.85rem}
+  #section-name{color:var(--gray);font-size:0.8rem}
+  .timer-controls{display:flex;gap:8px;align-items:center}
+  .timer-controls button{background:var(--surface);border:1px solid var(--dim);color:var(--gray);padding:4px 10px;border-radius:4px;cursor:pointer;font-size:0.75rem}
+  .timer-controls button:hover{border-color:var(--red);color:var(--white)}
+</style></head><body>
+<div id="header">
+  <h2>Presenter Console</h2>
+  <span id="section-name"></span>
+  <span id="slide-num"></span>
+  <div class="timer-controls">
+    <button onclick="resetTimer()">Reset</button>
+    <button onclick="toggleTimer()">Start/Stop</button>
+    <span id="timer">00:00:00</span>
+  </div>
+</div>
+<div class="preview-box"><div class="label">Current Slide</div><div class="content" id="current-preview"></div></div>
+<div class="preview-box"><div class="label">Next Slide</div><div class="content" id="next-preview"></div></div>
+<div id="notes-panel"><div class="label">Speaker Notes</div><div id="notes-text"></div></div>
+<script>
+  let elapsed = 0, running = false, interval = null;
+  function pad(n){return String(n).padStart(2,'0')}
+  function updateTimer(){
+    const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;
+    document.getElementById('timer').textContent=pad(h)+':'+pad(m)+':'+pad(s);
+  }
+  function toggleTimer(){
+    if(running){clearInterval(interval);running=false}
+    else{interval=setInterval(()=>{elapsed++;updateTimer()},1000);running=true}
+  }
+  function resetTimer(){clearInterval(interval);running=false;elapsed=0;updateTimer()}
+
+  window.addEventListener('message',e=>{
+    if(!e.data||e.data.type!=='slide-change')return;
+    {
+      document.getElementById('current-preview').innerHTML=e.data.slideHTML||'';
+      document.getElementById('next-preview').innerHTML=e.data.nextHTML||'<p style="color:#888">End of presentation</p>';
+      document.getElementById('notes-text').textContent=e.data.notes||'No notes for this slide.';
+      document.getElementById('slide-num').textContent=(e.data.current+1)+' / '+e.data.total;
+      document.getElementById('section-name').textContent=e.data.section||'';
+    }
+  });
+<\/script></body></html>`;
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.target.matches('input, textarea, select, [contenteditable]')) return;
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(total - 1); }
+    else if (e.key === 'p' || e.key === 'P') { openPresenter(); }
+    else if (e.key === 'f' || e.key === 'F') {
+      var el = document.documentElement;
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    }
+    else if (e.key === 'Escape') {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+  });
+
+  // Touch / click nav
+  document.addEventListener('click', e => {
+    if (e.target.closest('button, a, input, select, textarea, [role="button"]')) return;
+    const x = e.clientX / window.innerWidth;
+    if (x > 0.6) go(current + 1);
+    else if (x < 0.4) go(current - 1);
+  });
+
+  // Touch swipe nav
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const diff = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? go(current - 1) : go(current + 1);
+    }
+  });
+
+  // URL hash state
+  function initFromHash() {
+    const m = window.location.hash.match(/^#slide-(\d+)$/);
+    if (m) {
+      const n = Math.max(0, Math.min(parseInt(m[1], 10) - 1, total - 1));
+      go(n);
+    } else {
+      go(0);
+    }
+  }
+
+  // Init
+  document.getElementById('presenter-btn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    openPresenter();
+  });
+  initFromHash();
+
+  // F1 start lights sequence (loop with random blackout delay)
+  (function runLights() {
+    var lights = document.querySelectorAll('.start-lights .light');
+    if (!lights.length) return;
+    var i = 0;
+    function lightNext() {
+      if (i < lights.length) {
+        lights[i].classList.add('on');
+        i++;
+        setTimeout(lightNext, 400);
+      } else {
+        // All lit — random delay before lights out (1–4s like real F1)
+        var delay = 1000 + Math.random() * 3000;
+        setTimeout(function() {
+          lights.forEach(function(l) { l.classList.remove('on'); });
+          // Pause dark, then restart
+          i = 0;
+          setTimeout(runLights, 1500);
+        }, delay);
+      }
+    }
+    lightNext();
+  })();
+
+  // Font loading mask (with timeout fallback for file:// or slow loads)
+  document.fonts.ready.then(function() {
+    document.body.classList.add('loaded');
+  });
+  setTimeout(function() {
+    document.body.classList.add('loaded');
+  }, 2000);
+})();
+</script>
+</body>
+</html>

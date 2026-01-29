@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Best Practices — Projection</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='16' height='16' fill='%23e10600'/><rect x='16' y='16' width='16' height='16' fill='%23e10600'/><rect x='16' width='16' height='16' fill='%23222'/><rect y='16' width='16' height='16' fill='%23222'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Racing+Sans+One&display=swap">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --red: #e10600;
+    --red-glow: rgba(225, 6, 0, 0.3);
+    --white: #f0f0f0;
+    --gray: #888;
+    --dim: #444;
+    --font: 'Inter', sans-serif;
+    --heading: 'Racing Sans One', 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .page {
+    max-width: 800px;
+    width: 100%;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid var(--red);
+  }
+
+  .header h1 {
+    font-family: var(--heading);
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  .header p {
+    font-size: 0.95rem;
+    color: var(--gray);
+    font-weight: 300;
+  }
+
+  /* ── Sections ── */
+  .section {
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-family: var(--heading);
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--dim);
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--white);
+  }
+
+  .card h3 .num {
+    color: var(--red);
+    font-family: var(--heading);
+    margin-right: 6px;
+    font-size: 1.1rem;
+  }
+
+  .card p {
+    font-size: 0.88rem;
+    color: var(--gray);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .card .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 6px;
+  }
+
+  .tag-external {
+    background: rgba(225, 6, 0, 0.15);
+    color: var(--red);
+    border: 1px solid rgba(225, 6, 0, 0.3);
+  }
+
+  .tag-internal {
+    background: rgba(0, 255, 135, 0.1);
+    color: #00ff87;
+    border: 1px solid rgba(0, 255, 135, 0.25);
+  }
+
+  /* ── Don'ts grid ── */
+  .donts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .dont-card {
+    background: var(--surface);
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-top: 3px solid var(--red);
+  }
+
+  .dont-card h3 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--white);
+  }
+
+  .dont-card p {
+    font-size: 0.82rem;
+    color: var(--gray);
+    line-height: 1.45;
+    font-weight: 300;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--dim);
+    text-align: center;
+    color: var(--gray);
+    font-size: 0.8rem;
+    font-weight: 300;
+  }
+
+  .footer strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* ── Print styles ── */
+  @media print {
+    :root {
+      --bg: #fff;
+      --surface: #f5f5f5;
+      --white: #111;
+      --gray: #555;
+      --dim: #ccc;
+    }
+
+    body {
+      background: #fff;
+      color: #111;
+      padding: 0;
+      min-height: auto;
+    }
+
+    .page {
+      max-width: 100%;
+    }
+
+    .header {
+      border-bottom-color: #111;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+    }
+
+    .section-title {
+      color: #111;
+      font-size: 1.1rem;
+    }
+
+    .section-title::after {
+      background: #ccc;
+    }
+
+    .card, .dont-card {
+      border-color: #ddd;
+      background: #f5f5f5;
+    }
+
+    .dont-card {
+      border-top-color: #111;
+    }
+
+    .card h3, .dont-card h3 {
+      color: #111;
+    }
+
+    .card h3 .num {
+      color: #111;
+    }
+
+    .tag-external {
+      background: #f0f0f0;
+      color: #333;
+      border-color: #999;
+    }
+
+    .tag-internal {
+      background: #f0f0f0;
+      color: #333;
+      border-color: #999;
+    }
+
+    .footer {
+      border-top-color: #ccc;
+    }
+
+    .footer strong {
+      color: #111;
+    }
+
+    .section { margin-bottom: 16px; }
+    .card { padding: 10px 14px; margin-bottom: 8px; }
+    .dont-card { padding: 10px 14px; }
+  }
+
+  @page {
+    size: letter;
+    margin: 0.5in;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>AI Best Practices</h1>
+    <p>Projection &mdash; AVU 2026 AI Committee</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The 4 Principles</div>
+
+    <div class="card">
+      <h3><span class="num">01</span> Always Verify AI Output</h3>
+      <p>AI makes mistakes confidently. It won't say "I think" or "maybe." Always double-check critical information — dates, room numbers, specs, pricing — before acting on it.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">02</span> Protect Sensitive Data</h3>
+      <p>Never paste screenshots of IntelliEvent, CRM, financial documents, or client data into external AI tools like ChatGPT. Use fake names and anonymized info when possible.</p>
+      <span class="tag tag-external">External AI: Be cautious</span>
+      <span class="tag tag-internal">Internal AI: Designed for confidential use</span>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">03</span> AI Assists, You Decide</h3>
+      <p>AI is your co-pilot, not your autopilot. Your name is on the email, the proposal, the answer. AI helps you get there faster — you make the final call.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">04</span> Ask for Sources</h3>
+      <p>When AI tells you something, ask "Where did you get that?" It can cite sources so you can verify. This helps you fact-check and actually learn rather than just copy-paste.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The 3 Don'ts</div>
+
+    <div class="donts-grid">
+      <div class="dont-card">
+        <h3>Don't Screenshot Confidential Docs</h3>
+        <p>IntelliEvent, Sugar CRM, client financials, credit card forms, contracts — none of these should go into external AI tools.</p>
+      </div>
+
+      <div class="dont-card">
+        <h3>Don't Trust Blindly</h3>
+        <p>AI will never say "I don't know." It will invent something plausible instead. Verify anything that matters before you act on it.</p>
+      </div>
+
+      <div class="dont-card">
+        <h3>Don't Skip the Human Touch</h3>
+        <p>Clients can tell when something is pure AI. Add your personality, rewrite key sentences, make it sound like you.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>Remember:</strong> These are best practices, not HR policy. We encourage AI use — just use it thoughtfully.
+  </div>
+
+</div>
+</body>
+</html>
