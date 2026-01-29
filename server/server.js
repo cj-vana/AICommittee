@@ -75,7 +75,7 @@ const POLLS = {
   '6': {
     question: 'Vote for the name!',
     type: 'mc-writein',
-    options: ['IRIS — Intelligent Resource Information System', 'AVI — Audio Visual Intelligence', 'ProjBot']
+    options: ['IRIS — Intelligent Resource Information System', 'AVI — Audio Visual Intelligence', 'Projection Assistant']
   }
 };
 
