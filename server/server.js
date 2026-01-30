@@ -73,9 +73,9 @@ const POLLS = {
     options: []
   },
   '6': {
-    question: 'Vote for the name!',
-    type: 'mc-writein',
-    options: ['IRIS — Intelligent Resource Information System', 'AVI — Audio Visual Intelligence', 'Projection Assistant']
+    question: 'How many of you have clients that use AI?',
+    type: 'mc',
+    options: ['Yes, several clients', 'Yes, a few', 'Not that I know of', 'I\'m not sure']
   }
 };
 

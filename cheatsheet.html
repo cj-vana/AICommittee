@@ -181,6 +181,29 @@
     font-weight: 600;
   }
 
+  /* ── Download button ── */
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 14px 28px;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: opacity 0.15s;
+  }
+
+  .download-btn:hover { opacity: 0.85; }
+  .download-btn:active { opacity: 0.7; }
+
   /* ── Print styles ── */
   @media print {
     :root {
@@ -258,6 +281,8 @@
       color: #111;
     }
 
+    .download-btn { display: none; }
+
     .section { margin-bottom: 16px; }
     .card { padding: 10px 14px; margin-bottom: 8px; }
     .dont-card { padding: 10px 14px; }
@@ -326,8 +351,32 @@
 
   <div class="footer">
     <strong>Remember:</strong> These are best practices, not Projection policy. We encourage AI use — just use it thoughtfully.
+    <br><br>
+    <button class="download-btn" id="download-btn">Download PDF</button>
   </div>
 
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+<script>
+document.getElementById('download-btn').addEventListener('click', function() {
+  var btn = this;
+  btn.textContent = 'Generating…';
+  btn.disabled = true;
+  html2pdf()
+    .set({
+      margin: [0.5, 0.5, 0.5, 0.5],
+      filename: 'AI-Best-Practices-Projection.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    })
+    .from(document.querySelector('.page'))
+    .save()
+    .then(function() {
+      btn.textContent = 'Download PDF';
+      btn.disabled = false;
+    });
+});
+</script>
 </body>
 </html>
